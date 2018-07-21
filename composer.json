@@ -1,0 +1,12 @@
+{
+    "name": "kumaravel/model-validation",
+    "description": "Model validation for Laravel application.",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Kumaravel",
+            "email": "kumarwindows11@gmail.com"
+        }
+    ],
+    "require": {}
+}

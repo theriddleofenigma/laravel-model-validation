@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Packages;
+namespace Paradox;
 
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator;
 
 /**
  * Class ModelValidator

@@ -1,5 +1,5 @@
 {
-    "name": "kumaravelk011/model-validation",
+    "name": "theriddleofenigma/laravel-model-validation",
     "description": "Model validation for Laravel application.",
     "type": "library",
     "authors": [
@@ -8,5 +8,12 @@
             "email": "kumarwindows11@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "illuminate/validation": "^5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Paradox\\": "src/"
+        }
+    }
 }

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 
 /**
  * Class ModelValidator
+ *
  * @package App\Packages
  */
 class ModelValidator
@@ -39,7 +40,8 @@ class ModelValidator
     protected $customAttributes = [];
 
     /**
-     * ModelValidator constructor.
+     * ModelValidator constructor
+     *
      * @param $model
      */
     public function __construct($model)
@@ -49,6 +51,8 @@ class ModelValidator
     }
 
     /**
+     * Initialize this class by setting up the needed params
+     *
      * @return $this
      */
     public function initialize()
@@ -69,6 +73,8 @@ class ModelValidator
     }
 
     /**
+     * Validate the model params
+     *
      * @return $this
      */
     public function validate()

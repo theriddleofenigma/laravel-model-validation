@@ -1,5 +1,8 @@
-# Laravel Model Validator
-Model validator validates the model data. *Only for laravel applications.
+# Laravel Model Validation
+
+    <code>MADE WITH \<LOVE/> AND I LOVE \<CODE/></code>
+
+Model validation - Validates the model data. *Only for laravel applications.
 
 An easy validator option for you eloquent models. Also have flexibility for additional codes that might be executed on before and after validation.
 
@@ -23,6 +26,8 @@ Here user model is mentioned as an example. You could use this in any model you 
         public static function boot()
         {
             parent::boot();
+            
+            // Add this method for validating the current model on model saving event
             static::validateOnSaving();
         }
 
@@ -34,7 +39,7 @@ Here user model is mentioned as an example. You could use this in any model you 
         public function validationRules()
         {
             return [
-                'name' => 'required|max:2',
+                'name' => 'required|max:10',
                 'email' => 'required|email',
             ];
         }
@@ -90,6 +95,8 @@ You could mention the validation only for creating itself or on any model event 
         public static function boot()
         {
             parent::boot();
+            
+            // You can mention like this for validating the model on custom events as your wish
             static::creating(function($model){
                 $model->validate();
             });

@@ -80,3 +80,17 @@ Here user model is mentioned as an example. You could use this in any model you 
             // Some code goes here..
         }
     }
+
+### Other options
+You could mention the validation only for creating itself or on any model event just add `$model->validate()`.
+
+        /**
+         * Boot method
+         */
+        public static function boot()
+        {
+            parent::boot();
+            static::creating(function($model){
+                $model->validate();
+            });
+        }

@@ -1,7 +1,7 @@
 # Laravel Model Validator
-Model validator validates the model data. *Only for laravel applications.
+    Model validator validates the model data. *Only for laravel applications.
 
-An easy validator option for you eloquent models. Also have flexibility for additional codes that might be executed on before and after validation.
+    An easy validator option for you eloquent models. Also have flexibility for additional codes that might be executed on before and after validation.
 
 ### Composer install
 ```shell
@@ -9,6 +9,8 @@ composer require codedevpal/laravel-model-validation
 ```
 
 ## Usage Examples
+    Here user model is mentioned as an example. You could use this in any model you want.
+
 ### User.php model
     use CodeDevPal\ValidatorTrait;
     class User extends Model 

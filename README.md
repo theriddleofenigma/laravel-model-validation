@@ -1,6 +1,6 @@
 # Laravel Model Validation
 
-    <code>MADE WITH \<LOVE/> AND I LOVE \<CODE/></code>
+<code>MADE WITH \<LOVE/> AND I LOVE \<CODE/></code>
 
 Model validation - Validates the model data. *Only for laravel applications.
 

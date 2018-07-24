@@ -1,5 +1,5 @@
 {
-    "name": "codedevpirate/laravel-model-validation",
+    "name": "codedevpal/laravel-model-validation",
     "description": "Model validation for Laravel application.",
     "type": "library",
     "authors": [
@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-4": {
-            "CodeDevPirate\\": "src/"
+            "CodeDevPal\\": "src/"
         }
     }
 }

@@ -1,5 +1,5 @@
 {
-    "name": "theriddleofenigma/laravel-model-validation",
+    "name": "codedevpirate/laravel-model-validation",
     "description": "Model validation for Laravel application.",
     "type": "library",
     "authors": [
@@ -9,11 +9,12 @@
         }
     ],
     "require": {
+        "laravel/framework": "5.*"
         "illuminate/validation": "^5.6"
     },
     "autoload": {
         "psr-4": {
-            "Paradox\\": "src/"
+            "CodeDevPirate\\": "src/"
         }
     }
 }

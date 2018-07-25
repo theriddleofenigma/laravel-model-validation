@@ -100,7 +100,7 @@ You could mention the validation only for creating itself or on any model event 
                 $model->validate();
             });
             
-            // Or you may an alias like `$model->validateOnCreating()`.
+            // Or you may an alias like `static::validateOnCreating()`.
         }
 
 Refer the available methods in the validationTrait.

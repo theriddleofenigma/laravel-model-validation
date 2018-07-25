@@ -21,10 +21,19 @@ trait ValidatorTrait
     }
     
     /**
-     * Alias method for calling the validate method on saving in boot
+     * Alias method for calling the validate method on saving the model
      */
     public static function validateOnSaving() {
         static::saving(function($model){
+            $model->validate();
+        });
+    }
+
+    /**
+     * Alias method for calling the validate method on creating the model
+     */
+    public static function validateOnCreating() {
+        static::creating(function($model){
             $model->validate();
         });
     }

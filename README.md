@@ -1,4 +1,4 @@
-<code>&hearts; Made with \<love/> AND I love \<code/></code>
+<code>&hearts; Made with \<love/> And I love \<code/></code>
 
 # Laravel Model Validation
 Model validation - Validates the model data. *Only for laravel applications.
@@ -99,4 +99,6 @@ You could mention the validation only for creating itself or on any model event 
             static::creating(function($model){
                 $model->validate();
             });
+            
+            // Or you may an alias like `$model->validateOnCreating()`. Refer the available methods in the validationTrait
         }

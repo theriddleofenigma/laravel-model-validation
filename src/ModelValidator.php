@@ -1,6 +1,6 @@
 <?php
 
-namespace CodeDevPal;
+namespace Enigma;
 
 use Illuminate\Support\Facades\Validator;
 

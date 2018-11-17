@@ -7,7 +7,7 @@ An easy validator option for you eloquent models. Also have flexibility for addi
 
 ### Composer install
 ```shell
-composer require codedevpal/laravel-model-validation
+composer require theriddleofenigma/laravel-model-validation
 ```
 
 ## Usage Examples

@@ -3,7 +3,7 @@
 # Laravel Model Validation
 Model validation - Validates the model data. *Only for laravel applications.
 
-An easy validator option for you eloquent models. Also have flexibility for additional codes that might be executed on before and after validation.
+An easy validator option for your eloquent models. Also have flexibility for additional codes that might be executed on before and after validation.
 
 ### Composer install
 ```shell

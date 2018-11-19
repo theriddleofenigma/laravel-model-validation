@@ -104,3 +104,7 @@ You could mention the validation only for creating itself or on any model event 
         }
 
 Refer the available methods in the validationTrait.
+
+## License
+
+Laravel Telescope is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

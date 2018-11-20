@@ -5,14 +5,12 @@ namespace Enigma;
 use Illuminate\Support\Facades\Validator;
 
 /**
- * Class ModelValidator
- *
- * @package App\Packages
+ * Class ModelValidator.
  */
 class ModelValidator
 {
     /**
-     * The model object to validate
+     * The model object to validate.
      *
      * @var
      */
@@ -40,7 +38,7 @@ class ModelValidator
     protected $customAttributes = [];
 
     /**
-     * ModelValidator constructor
+     * ModelValidator constructor.
      *
      * @param $model
      */
@@ -51,7 +49,7 @@ class ModelValidator
     }
 
     /**
-     * Initialize this class by setting up the needed params
+     * Initialize this class by setting up the needed params.
      *
      * @return $this
      */
@@ -73,7 +71,7 @@ class ModelValidator
     }
 
     /**
-     * Validate the model params
+     * Validate the model params.
      *
      * @return $this
      */

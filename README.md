@@ -14,13 +14,14 @@ composer require theriddleofenigma/laravel-model-validation
 Here user model is mentioned as an example. You could use this in any model you want.
 
 ### User.php model
-    use CodeDevPal\ValidatorTrait;
+    use Enigma\ValidatorTrait;
+
     class User extends Model 
     {
         use ValidatorTrait;
 
         /**
-         * Boot method
+         * Boot method.
          */
         public static function boot()
         {
@@ -31,7 +32,7 @@ Here user model is mentioned as an example. You could use this in any model you 
         }
 
         /**
-         * Validation rules to validate
+         * Validation rules to validate.
          * 
          * @return array
          */
@@ -44,7 +45,7 @@ Here user model is mentioned as an example. You could use this in any model you 
         }
     
         /**
-         * Custom messages to replace the validation messages
+         * Custom messages to replace the validation messages.
          * 
          * @return array
          */
@@ -57,7 +58,7 @@ Here user model is mentioned as an example. You could use this in any model you 
         }
     
         /**
-         * Custom attribute names to replace the validation attribute name
+         * Custom attribute names to replace the validation attribute name.
          * 
          * @return array
          */
@@ -69,7 +70,7 @@ Here user model is mentioned as an example. You could use this in any model you 
         }
         
         /**
-         * Code to be executed before the validation goes here
+         * Code to be executed before the validation goes here.
          */
         public function beforeValidation()
         {
@@ -77,7 +78,7 @@ Here user model is mentioned as an example. You could use this in any model you 
         }
         
         /**
-         * Code to be executed after the validation goes here
+         * Code to be executed after the validation goes here.
          */
         public function afterValidation()
         {
@@ -89,7 +90,7 @@ Here user model is mentioned as an example. You could use this in any model you 
 You could mention the validation only for creating itself or on any model event just add `$model->validate()`.
 
         /**
-         * Boot method
+         * Boot method.
          */
         public static function boot()
         {

@@ -1,4 +1,8 @@
-<code>&hearts; Made with &lt;love/&gt; And I love &lt;code/&gt;</code>
+<p align="center"><code>&hearts; Made with &lt;love/&gt; And I love &lt;code/&gt;</code></p>
+
+<p align="center">
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation.svg?type=shield"/></a>
+</p>
 
 # Laravel Model Validation
 Model validation - Validates the model data. *Only for laravel applications.

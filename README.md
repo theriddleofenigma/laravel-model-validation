@@ -5,6 +5,8 @@
 </p>
 
 # Laravel Model Validation
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation?ref=badge_shield)
+
 Model validation - Validates the model data. *Only for laravel applications.
 
 An easy validator option for your eloquent models. Also have flexibility for additional codes that might be executed on before and after validation.
@@ -113,3 +115,6 @@ Refer the available methods in the validationTrait.
 ## License
 
 Laravel Model Validation is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation?ref=badge_large)

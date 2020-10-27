@@ -90,7 +90,7 @@ class ModelValidator
             return $this->model->validationMessages();
         }
 
-        if(property_exists($this->model, 'validationMessages')) {
+        if (property_exists($this->model, 'validationMessages')) {
             return $this->model->validationMessages;
         }
     }
@@ -106,7 +106,7 @@ class ModelValidator
             return $this->model->validationAttributes();
         }
 
-        if(property_exists($this->model, 'validationAttributes')) {
+        if (property_exists($this->model, 'validationAttributes')) {
             return $this->model->validationAttributes;
         }
     }
@@ -122,7 +122,7 @@ class ModelValidator
             return $this->model->validationRules();
         }
 
-        if(property_exists($this->model, 'validationRules')) {
+        if (property_exists($this->model, 'validationRules')) {
             return $this->model->validationRules;
         }
     }

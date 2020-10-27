@@ -22,7 +22,7 @@ Here user model is mentioned as an example. You could use this in any model you 
 ### User.php model
     use Enigma\ValidatorTrait;
 
-    class User extends Model 
+    class User extends Model
     {
         use ValidatorTrait;
 
@@ -32,49 +32,25 @@ Here user model is mentioned as an example. You could use this in any model you 
         public static function boot()
         {
             parent::boot();
-            
+
             // Add this method for validating the current model on model saving event
             static::validateOnSaving();
         }
 
-        /**
-         * Validation rules to validate.
-         * 
-         * @return array
-         */
-        public function validationRules()
-        {
-            return [
-                'name' => 'required|max:10',
-                'email' => 'required|email',
-            ];
-        }
-    
-        /**
-         * Custom messages to replace the validation messages.
-         * 
-         * @return array
-         */
-        public function validationMessages()
-        {
-            return [
-                'name.required' => 'Name field is required.',
-                'email.email' => 'The given email is in invalid format.',
-            ];
-        }
-    
-        /**
-         * Custom attribute names to replace the validation attribute name.
-         * 
-         * @return array
-         */
-        public function validationAttributes()
-        {
-            return [
-                'name' => 'User Name'
-            ];
-        }
-        
+        public $validationRules = [
+            'name' => 'required|max:10',
+            'email' => 'required|email',
+        ];
+
+        public $validationMessages = [
+            'name.required' => 'Name field is required.',
+            'email.email' => 'The given email is in invalid format.',
+        ];
+
+        public $validationAttributes = [
+            'name' => 'User Name'
+        ];
+
         /**
          * Code to be executed before the validation goes here.
          */
@@ -82,7 +58,7 @@ Here user model is mentioned as an example. You could use this in any model you 
         {
             // Some code goes here..
         }
-        
+
         /**
          * Code to be executed after the validation goes here.
          */
@@ -93,6 +69,48 @@ Here user model is mentioned as an example. You could use this in any model you 
     }
 
 ### Other options
+You could mention the validation rules, attributes and messages as a property as well as method.
+
+        /**
+         * Validation rules to validate.
+         *
+         * @return array
+         */
+        public function validationRules()
+        {
+            // You can process your code here and return the rules as however you want.
+            return [
+                'name' => 'required|max:10',
+                'email' => 'required|email',
+            ];
+        }
+
+        /**
+         * Custom messages to replace the validation messages.
+         *
+         * @return array
+         */
+        public function validationMessages()
+        {
+            // You can process your code here and return the messages as however you want.
+            return [
+                'name.required' => 'Name field is required.',
+                'email.email' => 'The given email is in invalid format.',
+            ];
+        }
+
+        /**
+         * Custom attribute names to replace the validation attribute name.
+         *
+         * @return array
+         */
+        public function validationAttributes()
+        {
+            return [
+                'name' => 'User Name'
+            ];
+        }
+
 You could mention the validation only for creating itself or on any model event just add `$model->validate()`.
 
         /**
@@ -101,16 +119,16 @@ You could mention the validation only for creating itself or on any model event 
         public static function boot()
         {
             parent::boot();
-            
+
             // You can mention like this for validating the model on custom events as your wish
-            static::creating(function($model){
+            self::creating(function($model){
                 $model->validate();
             });
-            
-            // Or you may an alias like `static::validateOnCreating()`.
+
+            // Or you can make use of the alias `self::validateOnCreating()`.
         }
 
-Refer the available methods in the validationTrait.
+Refer the available methods in the ValidationTrait.
 
 ## License
 

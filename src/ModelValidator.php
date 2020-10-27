@@ -55,17 +55,9 @@ class ModelValidator
      */
     public function initialize()
     {
-        if (method_exists($this->model, 'validationMessages')) {
-            $this->customMessages = array_merge($this->customMessages, $this->model->validationMessages());
-        }
-
-        if (method_exists($this->model, 'validationAttributes')) {
-            $this->customAttributes = array_merge($this->customAttributes, $this->model->validationAttributes());
-        }
-
-        if (method_exists($this->model, 'validationRules')) {
-            $this->rules = array_merge($this->rules, $this->model->validationRules());
-        }
+        $this->customMessages = $this->getMessages();
+        $this->customAttributes = $this->getAttributes();
+        $this->rules = $this->getRules();
 
         return $this;
     }
@@ -85,5 +77,53 @@ class ModelValidator
         }
 
         return $this;
+    }
+
+    /**
+     * Get the validation messages.
+     *
+     * @return array
+     */
+    protected function getMessages()
+    {
+        if (method_exists($this->model, 'validationMessages')) {
+            return $this->model->validationMessages();
+        }
+
+        if (property_exists($this->model, 'validationMessages')) {
+            return $this->model->validationMessages;
+        }
+    }
+
+    /**
+     * Get the validation attributes.
+     *
+     * @return array
+     */
+    protected function getAttributes()
+    {
+        if (method_exists($this->model, 'validationAttributes')) {
+            return $this->model->validationAttributes();
+        }
+
+        if (property_exists($this->model, 'validationAttributes')) {
+            return $this->model->validationAttributes;
+        }
+    }
+
+    /**
+     * Get the validation rules.
+     *
+     * @return array
+     */
+    protected function getRules()
+    {
+        if (method_exists($this->model, 'validationRules')) {
+            return $this->model->validationRules();
+        }
+
+        if (property_exists($this->model, 'validationRules')) {
+            return $this->model->validationRules;
+        }
     }
 }

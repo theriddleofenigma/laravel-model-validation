@@ -81,7 +81,7 @@ You can control the data which gets validated by adding validationData method.
             // Here $data is the value of $this->getAttributes(), feel free to use your own code to produce the data. Ex: $this->toArray(), $this->getOriginal(), etc.,
             $data["name"] = strtolower($data["name"]);
 
-            // <b>Note:</b> This wouldn't affect your actual model data which is going to persist in DB.
+            // Note: This wouldn't affect your actual model data which is going to persist in DB.
             
             return $data;
         }

@@ -149,10 +149,11 @@ class ModelValidator
      */
     protected function getData()
     {
+        $data = $this->model->getAttributes();
         if (method_exists($this->model, 'validationData')) {
-            return $this->model->validationData();
+            return $this->model->validationData($data);
         }
 
-        return $this->model->getAttributes();
+        return $data;
     }
 }

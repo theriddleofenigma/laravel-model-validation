@@ -2,6 +2,7 @@
 
 namespace Enigma;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -14,35 +15,42 @@ class ModelValidator
      *
      * @var
      */
-    protected $model;
+    protected Model $model;
+
+    /**
+     * The data to be validated.
+     *
+     * @var array
+     */
+    protected array $data;
 
     /**
      * The rules to be applied to the data.
      *
      * @var array
      */
-    protected $rules = [];
+    protected array $rules;
 
     /**
      * The array of custom error messages.
      *
      * @var array
      */
-    protected $customMessages = [];
+    protected array $customMessages;
 
     /**
      * The array of custom attribute names.
      *
      * @var array
      */
-    protected $customAttributes = [];
+    protected array $customAttributes;
 
     /**
      * ModelValidator constructor.
      *
      * @param $model
      */
-    public function __construct($model)
+    public function __construct(Model $model)
     {
         $this->model = $model;
         $this->initialize();
@@ -58,6 +66,7 @@ class ModelValidator
         $this->customMessages = $this->getMessages();
         $this->customAttributes = $this->getAttributes();
         $this->rules = $this->getRules();
+        $this->data = $this->getData();
 
         return $this;
     }
@@ -70,7 +79,7 @@ class ModelValidator
     public function validate()
     {
         if ($this->rules) {
-            Validator::make($this->model->toArray(), $this->rules)
+            Validator::make($this->data, $this->rules)
                 ->setCustomMessages($this->customMessages)
                 ->addCustomAttributes($this->customAttributes)
                 ->validate();
@@ -93,6 +102,8 @@ class ModelValidator
         if (property_exists($this->model, 'validationMessages')) {
             return $this->model->validationMessages;
         }
+
+        return [];
     }
 
     /**
@@ -109,6 +120,8 @@ class ModelValidator
         if (property_exists($this->model, 'validationAttributes')) {
             return $this->model->validationAttributes;
         }
+
+        return [];
     }
 
     /**
@@ -125,5 +138,21 @@ class ModelValidator
         if (property_exists($this->model, 'validationRules')) {
             return $this->model->validationRules;
         }
+
+        return [];
+    }
+
+    /**
+     * Get the validation data.
+     *
+     * @return array
+     */
+    protected function getData()
+    {
+        if (method_exists($this->model, 'validationData')) {
+            return $this->model->validationData();
+        }
+
+        return $this->model->getAttributes();
     }
 }

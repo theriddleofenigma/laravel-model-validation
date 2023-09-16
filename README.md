@@ -68,6 +68,24 @@ Here user model is mentioned as an example. You could use this in any model you 
         }
     }
 
+### Control the data get validated
+You can control the data which gets validated by adding validationData method.
+
+        /**
+         * Validation data to be validated.
+         *
+         * @return array
+         */
+        public function validationData(array $data)
+        {
+            // Here $data is the value of $this->getAttributes(), feel free to use your own code to produce the data. Ex: $this->toArray(), $this->getOriginal(), etc.,
+            $data["name"] = strtolower($data["name"]);
+
+            // <b>Note:</b> This wouldn't affect your actual model data which is going to persist in DB.
+            
+            return $data;
+        }
+
 ### Other options
 You could mention the validation rules, attributes and messages as a property as well as method.
 

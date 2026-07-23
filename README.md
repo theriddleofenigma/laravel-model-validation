@@ -1,161 +1,164 @@
-<p align="center"><code>&hearts; Made with &lt;love/&gt; And I love &lt;code/&gt;</code></p>
-
-<p align="center">
-<a href="https://app.fossa.com/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation.svg?type=shield"/></a>
-</p>
-
 # Laravel Model Validation
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation?ref=badge_shield)
 
-Model validation - Validates the model data. *Only for laravel applications.
+[![Tests](https://github.com/theriddleofenigma/laravel-model-validation/actions/workflows/tests.yml/badge.svg)](https://github.com/theriddleofenigma/laravel-model-validation/actions/workflows/tests.yml)
+[![Latest Stable Version](https://img.shields.io/packagist/v/theriddleofenigma/laravel-model-validation.svg)](https://packagist.org/packages/theriddleofenigma/laravel-model-validation)
+[![Total Downloads](https://img.shields.io/packagist/dt/theriddleofenigma/laravel-model-validation.svg)](https://packagist.org/packages/theriddleofenigma/laravel-model-validation)
+[![License](https://img.shields.io/packagist/l/theriddleofenigma/laravel-model-validation.svg)](https://packagist.org/packages/theriddleofenigma/laravel-model-validation)
 
-An easy validator option for your eloquent models. Also have flexibility for additional codes that might be executed on before and after validation.
+Effortless, self-contained validation for your Eloquent models.
 
-### Composer install
+Keep your validation rules where the data lives. Declare the rules on the model,
+opt in to the model event you care about, and every save is validated
+automatically &mdash; no form requests, no repeated calls to the validator.
+
+## Requirements
+
+| Package | Version              |
+|---------|----------------------|
+| PHP     | 8.2, 8.3, 8.4        |
+| Laravel | 11.x, 12.x, 13.x     |
+
+> Laravel 13 requires PHP 8.3 or newer.
+
+## Installation
+
 ```shell
 composer require theriddleofenigma/laravel-model-validation
 ```
 
-## Usage Examples
-Here user model is mentioned as an example. You could use this in any model you want.
+## Quick start
 
-### User.php model
+Add the `Enigma\ValidatorTrait` to a model, declare its rules, and register the
+event you want to validate on:
+
 ```php
 use Enigma\ValidatorTrait;
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
     use ValidatorTrait;
 
-    /**
-     * Boot method.
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        // Add this method for validating the current model on model saving event
-        static::validateOnSaving();
-    }
-
-    public $validationRules = [
+    public array $validationRules = [
         'name' => 'required|max:10',
         'email' => 'required|email',
     ];
 
-    public $validationMessages = [
-        'name.required' => 'Name field is required.',
-        'email.email' => 'The given email is in invalid format.',
-    ];
-
-    public $validationAttributes = [
-        'name' => 'User Name'
-    ];
-
-    /**
-     * Code to be executed before the validation goes here.
-     */
-    public function beforeValidation()
+    protected static function boot(): void
     {
-        // Some code goes here..
-    }
+        parent::boot();
 
-    /**
-     * Code to be executed after the validation goes here.
-     */
-    public function afterValidation()
-    {
-        // Some code goes here..
+        // Validate the model automatically whenever it is saved.
+        static::validateOnSaving();
     }
 }
 ```
 
-### Control the data get validated
-You can control the data which gets validated by adding validationData method.
+Now any attempt to save an invalid model throws an
+`Illuminate\Validation\ValidationException`, exactly like Laravel's own
+validation &mdash; so in an HTTP context the errors are flashed and redirected
+for you automatically.
+
+```php
+User::create(['name' => 'Kumar', 'email' => 'not-an-email']); // throws ValidationException
+```
+
+## Registering validation
+
+Three helpers register the matching Eloquent event listener for you:
+
+```php
+static::validateOnSaving();   // fires on create and update
+static::validateOnCreating(); // fires on create only
+static::validateOnUpdating(); // fires on update only
+```
+
+Prefer to validate on a different event, or on demand? Call `validate()`
+yourself. It returns the validated data and throws on failure:
+
+```php
+$validated = $user->validate();
+```
+
+## Customising the configuration
+
+Rules, messages and attribute names can each be declared **either** as a
+property **or** as a method of the same name. A method always takes precedence,
+so you can compute the configuration dynamically when you need to.
+
+```php
+class User extends Model
+{
+    use ValidatorTrait;
+
+    public array $validationMessages = [
+        'name.required' => 'Name field is required.',
+        'email.email' => 'The given email is in an invalid format.',
+    ];
+
+    public array $validationAttributes = [
+        'name' => 'User Name',
+    ];
+
+    public function validationRules(): array
+    {
+        return [
+            'name' => 'required|max:10',
+            'email' => ['required', 'email', 'unique:users,email,' . $this->id],
+        ];
+    }
+}
+```
+
+## Controlling the data that gets validated
+
+By default the model's raw attributes are validated. Declare a
+`validationData()` method to reshape that data first &mdash; the returned value
+is used only for validation and never changes what is persisted.
+
 ```php
 /**
- * Validation data to be validated.
- *
- * @return array
+ * @param  array<string, mixed>  $data  The value of $this->getAttributes().
+ * @return array<string, mixed>
  */
-public function validationData(array $data)
+public function validationData(array $data): array
 {
-    // Here $data is the value of $this->getAttributes(), feel free to use your own code to produce the data. Ex: $this->toArray(), $this->getOriginal(), etc.,
-    $data["name"] = strtolower($data["name"]);
+    $data['name'] = strtolower($data['name']);
 
-    // Note: This wouldn't affect your actual model data which is going to persist in DB.
-    
     return $data;
 }
 ```
 
-### Other options
-You could mention the validation rules, attributes and messages as a property as well as method.
+## Before & after hooks
+
+Implement `beforeValidation()` and/or `afterValidation()` to run logic around
+each validation pass:
+
 ```php
-/**
- * Validation rules to validate.
- *
- * @return array
- */
-public function validationRules()
+public function beforeValidation(): void
 {
-    // You can process your code here and return the rules as however you want.
-    return [
-        'name' => 'required|max:10',
-        'email' => 'required|email',
-    ];
+    // Normalise attributes, set defaults, etc.
 }
 
-/**
- * Custom messages to replace the validation messages.
- *
- * @return array
- */
-public function validationMessages()
+public function afterValidation(): void
 {
-    // You can process your code here and return the messages as however you want.
-    return [
-        'name.required' => 'Name field is required.',
-        'email.email' => 'The given email is in invalid format.',
-    ];
-}
-
-/**
- * Custom attribute names to replace the validation attribute name.
- *
- * @return array
- */
-public function validationAttributes()
-{
-    return [
-        'name' => 'User Name'
-    ];
+    // Anything that should run once validation succeeds.
 }
 ```
 
-You could mention the validation only for creating itself or on any model event just add `$model->validate()`.
-```php
-/**
- * Boot method.
- */
-public static function boot()
-{
-    parent::boot();
+## Testing
 
-    // You can mention like this for validating the model on custom events as your wish
-    self::creating(function($model){
-        $model->validate();
-    });
-
-    // Or you can make use of the alias `self::validateOnCreating()`.
-}
+```shell
+composer install
+composer test
 ```
 
-Refer the available methods in the ValidationTrait.
+## Contributing
+
+Pull requests are welcome. Please make sure the test suite passes and add
+coverage for any behaviour you change.
 
 ## License
 
-Laravel Model Validation is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftheriddleofenigma%2Flaravel-model-validation?ref=badge_large)
+Laravel Model Validation is open-sourced software licensed under the
+[MIT license](https://opensource.org/licenses/MIT).

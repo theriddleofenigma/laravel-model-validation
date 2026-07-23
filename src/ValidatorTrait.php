@@ -1,46 +1,73 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Enigma;
 
+use Illuminate\Validation\ValidationException;
+
+/**
+ * Adds self-contained validation to an Eloquent model.
+ *
+ * The model declares its own rules, messages and attributes (see
+ * {@see ModelValidator}) and may optionally implement `beforeValidation()` and
+ * `afterValidation()` hooks that run around each validation pass.
+ *
+ * @mixin \Illuminate\Database\Eloquent\Model
+ */
 trait ValidatorTrait
 {
     /**
-     * Calls the validator instance to validate
-     * Also runs the beforeValidation and afterValidation methods if exists.
+     * Validate the model, running the optional before/after hooks.
+     *
+     * @return array<string, mixed> The validated data.
+     *
+     * @throws ValidationException
      */
-    public function validate()
+    public function validate(): array
     {
-        // Runs the logic that might be executed before the model validation
         if (method_exists($this, 'beforeValidation')) {
             $this->beforeValidation();
         }
 
-        // Model validation
-        (new ModelValidator($this))->validate();
+        $validated = $this->modelValidator()->validate();
 
-        // Runs the logic that might be executed after the model validation
         if (method_exists($this, 'afterValidation')) {
             $this->afterValidation();
         }
+
+        return $validated;
     }
 
     /**
-     * Alias method for calling the validate method on saving the model.
+     * Get a model validator instance for this model.
      */
-    public static function validateOnSaving()
+    public function modelValidator(): ModelValidator
     {
-        static::saving(function ($model) {
-            $model->validate();
-        });
+        return new ModelValidator($this);
     }
 
     /**
-     * Alias method for calling the validate method on creating the model.
+     * Register a saving event listener that validates the model.
      */
-    public static function validateOnCreating()
+    public static function validateOnSaving(): void
     {
-        static::creating(function ($model) {
-            $model->validate();
-        });
+        static::saving(static fn ($model) => $model->validate());
+    }
+
+    /**
+     * Register a creating event listener that validates the model.
+     */
+    public static function validateOnCreating(): void
+    {
+        static::creating(static fn ($model) => $model->validate());
+    }
+
+    /**
+     * Register an updating event listener that validates the model.
+     */
+    public static function validateOnUpdating(): void
+    {
+        static::updating(static fn ($model) => $model->validate());
     }
 }

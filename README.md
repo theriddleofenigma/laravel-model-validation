@@ -16,9 +16,10 @@ automatically &mdash; no form requests, no repeated calls to the validator.
 | Package | Version              |
 |---------|----------------------|
 | PHP     | 8.2, 8.3, 8.4        |
-| Laravel | 11.x, 12.x, 13.x     |
+| Laravel | 12.x, 13.x           |
 
-> Laravel 13 requires PHP 8.3 or newer.
+> Laravel 13 requires PHP 8.3 or newer. Older Laravel releases that have reached
+> end-of-life are not supported.
 
 ## Installation
 
@@ -155,8 +156,19 @@ composer test
 
 ## Contributing
 
-Pull requests are welcome. Please make sure the test suite passes and add
-coverage for any behaviour you change.
+Pull requests are welcome! Please read the [contributing guide](CONTRIBUTING.md)
+first, make sure the test suite passes, and add coverage for any behaviour you
+change. Notable changes are tracked in the [changelog](CHANGELOG.md).
+
+## Security
+
+If you discover a security vulnerability, please follow the process in
+[SECURITY.md](SECURITY.md) rather than opening a public issue.
+
+## Code of Conduct
+
+This project follows a [Code of Conduct](CODE_OF_CONDUCT.md). By participating,
+you are expected to uphold it.
 
 ## License
 

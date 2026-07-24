@@ -1,159 +1,134 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Enigma;
 
+use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 /**
- * Class ModelValidator.
+ * Resolves the validation configuration declared on an Eloquent model and
+ * validates the model's attributes against it.
+ *
+ * Every piece of the configuration - rules, messages, attributes and the data
+ * itself - may be declared on the model either as a public property or as a
+ * public method of the same name. A method always takes precedence over a
+ * property, allowing the configuration to be computed dynamically.
  */
 class ModelValidator
 {
-    /**
-     * The model object to validate.
-     *
-     * @var
-     */
-    protected Model $model;
-
-    /**
-     * The data to be validated.
-     *
-     * @var array
-     */
-    protected array $data;
-
-    /**
-     * The rules to be applied to the data.
-     *
-     * @var array
-     */
-    protected array $rules;
-
-    /**
-     * The array of custom error messages.
-     *
-     * @var array
-     */
-    protected array $customMessages;
-
-    /**
-     * The array of custom attribute names.
-     *
-     * @var array
-     */
-    protected array $customAttributes;
-
-    /**
-     * ModelValidator constructor.
-     *
-     * @param $model
-     */
-    public function __construct(Model $model)
-    {
-        $this->model = $model;
-        $this->initialize();
+    public function __construct(
+        protected readonly Model $model,
+    ) {
     }
 
     /**
-     * Initialize this class by setting up the needed params.
+     * Validate the model's data against its rules.
      *
-     * @return $this
+     * When the model declares no rules, validation is skipped and an empty
+     * array is returned.
+     *
+     * @return array<string, mixed> The validated data.
+     *
+     * @throws ValidationException
      */
-    public function initialize()
+    public function validate(): array
     {
-        $this->customMessages = $this->getMessages();
-        $this->customAttributes = $this->getAttributes();
-        $this->rules = $this->getRules();
-        $this->data = $this->getData();
+        $rules = $this->rules();
 
-        return $this;
+        if ($rules === []) {
+            return [];
+        }
+
+        return $this->makeValidator($rules)->validate();
     }
 
     /**
-     * Validate the model params.
+     * Build the underlying validator instance for the model.
      *
-     * @return $this
+     * @param  array<string, mixed>|null  $rules
      */
-    public function validate()
+    public function makeValidator(?array $rules = null): ValidatorContract
     {
-        if ($this->rules) {
-            Validator::make($this->data, $this->rules)
-                ->setCustomMessages($this->customMessages)
-                ->addCustomAttributes($this->customAttributes)
-                ->validate();
-        }
-
-        return $this;
+        return Validator::make(
+            $this->data(),
+            $rules ?? $this->rules(),
+            $this->messages(),
+            $this->attributes(),
+        );
     }
 
     /**
-     * Get the validation messages.
+     * Get the validation rules declared on the model.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function getMessages()
+    public function rules(): array
     {
-        if (method_exists($this->model, 'validationMessages')) {
-            return $this->model->validationMessages();
-        }
-
-        if (property_exists($this->model, 'validationMessages')) {
-            return $this->model->validationMessages;
-        }
-
-        return [];
+        return $this->resolve('validationRules');
     }
 
     /**
-     * Get the validation attributes.
+     * Get the custom validation messages declared on the model.
      *
-     * @return array
+     * @return array<string, string>
      */
-    protected function getAttributes()
+    public function messages(): array
     {
-        if (method_exists($this->model, 'validationAttributes')) {
-            return $this->model->validationAttributes();
-        }
-
-        if (property_exists($this->model, 'validationAttributes')) {
-            return $this->model->validationAttributes;
-        }
-
-        return [];
+        return $this->resolve('validationMessages');
     }
 
     /**
-     * Get the validation rules.
+     * Get the custom attribute names declared on the model.
      *
-     * @return array
+     * @return array<string, string>
      */
-    protected function getRules()
+    public function attributes(): array
     {
-        if (method_exists($this->model, 'validationRules')) {
-            return $this->model->validationRules();
-        }
-
-        if (property_exists($this->model, 'validationRules')) {
-            return $this->model->validationRules;
-        }
-
-        return [];
+        return $this->resolve('validationAttributes');
     }
 
     /**
-     * Get the validation data.
+     * Get the data that should be validated.
      *
-     * @return array
+     * Defaults to the model's raw attributes, but the model may reshape it by
+     * declaring a `validationData(array $data): array` method. The returned
+     * data never affects the values persisted to the database.
+     *
+     * @return array<string, mixed>
      */
-    protected function getData()
+    public function data(): array
     {
         $data = $this->model->getAttributes();
+
         if (method_exists($this->model, 'validationData')) {
             return $this->model->validationData($data);
         }
 
         return $data;
+    }
+
+    /**
+     * Resolve a validation config value from the model.
+     *
+     * A method of the given name is preferred over a property of the same
+     * name; when neither is present an empty array is returned.
+     *
+     * @return array<mixed>
+     */
+    protected function resolve(string $name): array
+    {
+        if (method_exists($this->model, $name)) {
+            return (array) $this->model->{$name}();
+        }
+
+        if (property_exists($this->model, $name)) {
+            return (array) $this->model->{$name};
+        }
+
+        return [];
     }
 }

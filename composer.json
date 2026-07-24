@@ -1,20 +1,50 @@
 {
     "name": "theriddleofenigma/laravel-model-validation",
-    "description": "Model validation for Laravel application.",
+    "description": "Effortless, self-contained validation for your Eloquent models.",
+    "keywords": [
+        "laravel",
+        "eloquent",
+        "model",
+        "validation",
+        "validator"
+    ],
+    "homepage": "https://github.com/theriddleofenigma/laravel-model-validation",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Kumaravel",
             "email": "kumarwindows11@gmail.com"
         }
     ],
-    "license": "MIT",
     "require": {
-        "laravel/framework": "^5.0|^6.20.26|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0"
+        "php": "^8.2",
+        "illuminate/contracts": "^12.0|^13.0",
+        "illuminate/database": "^12.0|^13.0",
+        "illuminate/support": "^12.0|^13.0",
+        "illuminate/validation": "^12.0|^13.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0|^11.0",
+        "phpunit/phpunit": "^11.5|^12.0"
     },
     "autoload": {
         "psr-4": {
             "Enigma\\": "src/"
         }
-    }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Enigma\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test:coverage": "vendor/bin/phpunit --coverage-text"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Enigma;
 
 use Closure;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -14,7 +15,7 @@ use Illuminate\Validation\ValidationException;
  * {@see ModelValidator}) and may optionally implement `beforeValidation()` and
  * `afterValidation()` hooks that run around each validation pass.
  *
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin Model
  */
 trait ValidatorTrait
 {

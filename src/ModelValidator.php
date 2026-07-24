@@ -22,8 +22,7 @@ class ModelValidator
 {
     public function __construct(
         protected readonly Model $model,
-    ) {
-    }
+    ) {}
 
     /**
      * Validate the model's data against its rules.

@@ -41,12 +41,21 @@ composer test
 Please make sure the whole suite passes and add coverage for any behaviour you
 change or add.
 
+## Coding style
+
+Code style is enforced with [Laravel Pint](https://laravel.com/docs/pint).
+Check and fix your changes before committing:
+
+```shell
+composer lint    # report style violations (used in CI)
+composer format  # fix them automatically
+```
+
 ## Pull request guidelines
 
 1. Fork the repository and create your branch from `master`.
 2. Keep each pull request focused on a single concern.
-3. Follow the existing code style (PSR-12, `declare(strict_types=1)`, typed
-   signatures).
+3. Follow the existing code style, enforced by Pint (`composer lint`).
 4. Add or update tests for your change.
 5. Update the documentation (`README.md`) and the `CHANGELOG.md` "Unreleased"
    section where relevant.

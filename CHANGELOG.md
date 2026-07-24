@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the underlying validator instance.
 - Test suite (PHPUnit + Orchestra Testbench) and a GitHub Actions matrix
   covering PHP 8.2&ndash;8.4 and Laravel 12&ndash;13.
+- Code style enforced with Laravel Pint (`composer lint` / `composer format`)
+  and checked in CI.
 - Community health files: `CONTRIBUTING.md`, `SECURITY.md`, a pull request
   template, and refreshed issue templates.
 

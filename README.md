@@ -130,6 +130,43 @@ public function validationData(array $data): array
 }
 ```
 
+## Skipping validation
+
+Sometimes you need to persist a model without validating it &mdash; a seeder, a
+data import, or an admin override. There are three ways to do it.
+
+Skip it on a single instance and save:
+
+```php
+$user = new User(['name' => 'Kumar']);
+
+$user->skipValidation()->save();
+// or, for a one-off save that leaves the instance's state untouched:
+$user->saveWithoutValidation();
+```
+
+Toggle the flag back on when you need to:
+
+```php
+$user->skipValidation();       // subsequent saves are not validated
+$user->skipValidation(false);  // validation is back on
+```
+
+Disable validation for a whole block &mdash; the cleanest way to skip it when
+creating through the query builder:
+
+```php
+User::withoutValidation(function () {
+    User::create(['name' => 'Kumar']); // not validated
+});
+
+// the return value of the callback is passed through
+$user = User::withoutValidation(fn () => User::create(['name' => 'Kumar']));
+```
+
+Validation is automatically re-enabled once the callback finishes, even if it
+throws.
+
 ## Before & after hooks
 
 Implement `beforeValidation()` and/or `afterValidation()` to run logic around

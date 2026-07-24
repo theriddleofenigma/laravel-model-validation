@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Support for Laravel 13.
+- Ability to skip validation via `skipValidation()`, `saveWithoutValidation()`,
+  and the static `withoutValidation()` callback helper ([#12]).
 - `validateOnUpdating()` helper to validate on the `updating` model event.
 - `modelValidator()` accessor and `ModelValidator::makeValidator()` for building
   the underlying validator instance.
@@ -27,3 +29,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - Support for Laravel 11 and earlier (end-of-life).
+
+[#12]: https://github.com/theriddleofenigma/laravel-model-validation/issues/12
